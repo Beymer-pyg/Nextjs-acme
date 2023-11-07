@@ -1,8 +1,8 @@
-import Image from 'next/image';
-import { UpdateInvoice, DeleteInvoice } from '@/app/ui/invoices/buttons';
-import InvoiceStatus from '@/app/ui/invoices/status';
-import { formatDateToLocal, formatCurrency } from '@/app/lib/utils';
-import { fetchFilteredInvoices } from '@/app/lib/data';
+import Image from "next/image";
+import { UpdateInvoice, DeleteInvoice } from "@/app/ui/invoices/buttons";
+import InvoiceStatus from "@/app/ui/invoices/status";
+import { formatDateToLocal, formatCurrency } from "@/app/lib/utils";
+import { fetchFilteredInvoices } from "@/app/lib/data";
 
 export default async function InvoicesTable({
   query,
@@ -84,7 +84,7 @@ export default async function InvoicesTable({
                   className="w-full border-b py-3 text-sm last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg"
                 >
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-3 w-40">
                       <Image
                         src={invoice.image_url}
                         className="rounded-full"
