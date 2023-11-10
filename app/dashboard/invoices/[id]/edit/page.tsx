@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const id = params.id;
-  // console.log(params);
+  console.log(params);
   const [invoice, customers] = await Promise.all([
     fetchInvoiceById(id),
     fetchCustomers(),
@@ -14,9 +14,6 @@ export default async function Page({ params }: { params: { id: string } }) {
   if (!invoice) {
     notFound();
   }
-
-  // console.log(invoice);
-  // console.log(customers);
 
   if (invoice === undefined) return;
 
