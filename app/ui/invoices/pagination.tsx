@@ -10,24 +10,24 @@ export default function Pagination({ totalPages }: { totalPages: number }) {
   // NOTE: comment in this code when you get to this point in the course
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  console.log(searchParams);
+  // console.log(searchParams);
   const currentPage = Number(searchParams.get("page")) || 1;
-  console.log(currentPage);
+  // console.log(currentPage);
 
   const createPageURL = (pageNumber: number | string) => {
     const params = new URLSearchParams(searchParams);
-    console.log(params.toString());
+    // console.log(params.toString());
     params.set("page", pageNumber.toString());
-    console.log(params.toString());
+    // console.log(params.toString());
 
     return `${pathname}?${params.toString()}`;
   };
   console.log(totalPages);
   const allPages = generatePagination(currentPage, totalPages);
-  console.log(allPages);
-  console.log(currentPage);
-  console.log(createPageURL(currentPage - 1));
-  console.log(createPageURL(currentPage));
+  // console.log(allPages);
+  // console.log(currentPage);
+  // console.log(createPageURL(currentPage - 1));
+  // console.log(createPageURL(currentPage));
   return (
     <>
       {/* NOTE: comment in this code when you get to this point in the course */}
@@ -47,7 +47,7 @@ export default function Pagination({ totalPages }: { totalPages: number }) {
             if (index === allPages.length - 1) position = "last";
             if (allPages.length === 1) position = "single";
             if (page === "...") position = "middle";
-            console.log(createPageURL(page));
+            // console.log(createPageURL(page));
 
             return (
               <PaginationNumber

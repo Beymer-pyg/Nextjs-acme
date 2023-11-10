@@ -7,6 +7,7 @@ import {
   LatestInvoiceRaw,
   User,
   Revenue,
+  FormattedCustomersTable,
 } from "./definitions";
 import { formatCurrency } from "./utils";
 import { unstable_noStore as noStore } from "next/cache";
@@ -21,7 +22,7 @@ export async function fetchRevenue() {
     // Don't do this in real life :)
 
     console.log("Fetching revenue data...");
-    await new Promise((resolve) => setTimeout(resolve, 3000));
+    // await new Promise((resolve) => setTimeout(resolve, 3000));
 
     const data = await sql<Revenue>`SELECT * FROM revenue`;
 
@@ -98,7 +99,7 @@ export async function fetchFilteredInvoices(
   currentPage: number
 ) {
   noStore();
-
+  console.log(query);
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 
   try {
@@ -173,7 +174,7 @@ export async function fetchInvoiceById(id: string) {
       amount: invoice.amount / 100,
     }));
 
-    console.log(invoice);
+    // console.log(invoice);
     return invoice[0];
   } catch (error) {
     console.error("Database Error:", error);
@@ -242,5 +243,32 @@ export async function getUser(email: string) {
   } catch (error) {
     console.error("Failed to fetch user:", error);
     throw new Error("Failed to fetch user.");
+  }
+}
+
+export async function fetchAllCustomers() {
+  noStore();
+
+  try {
+    const data = await sql<FormattedCustomersTable>`
+    SELECT
+		  customers.id,
+		  customers.name,
+		  customers.email,
+		  customers.image_url,
+		  COUNT(invoices.id) AS total_invoices,
+		  SUM(CASE WHEN invoices.status = 'pending' THEN invoices.amount ELSE 0 END) AS total_pending,
+		  SUM(CASE WHEN invoices.status = 'paid' THEN invoices.amount ELSE 0 END) AS total_paid
+		FROM customers
+		LEFT JOIN invoices ON customers.id = invoices.customer_id
+		GROUP BY customers.id, customers.name, customers.email, customers.image_url
+		ORDER BY customers.name ASC
+    `;
+
+    const customers = data.rows;
+    return customers;
+  } catch (err) {
+    console.error("Database Error:", err);
+    throw new Error("Failed to fetch all data customers.");
   }
 }
